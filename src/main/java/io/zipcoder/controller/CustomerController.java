@@ -32,12 +32,12 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/accounts/{accountId}/customer", method = RequestMethod.GET)
-    public ResponseEntity<?> getCustomerByAccount(@PathVariable long accountId){
-        Account a = accountRepository.findOne(accountId);
-        // Customer c = a.getCustomer;
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/accounts/{accountId}/customer", method = RequestMethod.GET)
+//    public ResponseEntity<?> getCustomerByAccount(@PathVariable long accountId){
+//        Account a = accountRepository.findOne(accountId);
+//        // Customer c = a.getCustomer;
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Customer>> getAllCustomers(){
