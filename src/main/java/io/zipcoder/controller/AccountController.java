@@ -13,8 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.zipcoder.domain.Account;
+import io.zipcoder.domain.Bill;
+import io.zipcoder.domain.Customer;
+import io.zipcoder.domain.Deposit;
+import io.zipcoder.domain.Withdrawal;
 import io.zipcoder.repositories.AccountRepository;
+import io.zipcoder.repositories.BillRepository;
 import io.zipcoder.repositories.CustomerRepository;
+import io.zipcoder.repositories.DepositRepository;
+import io.zipcoder.repositories.WithdrawalRepository;
 
 @RestController
 public class AccountController {
@@ -22,6 +29,9 @@ public class AccountController {
 	@Inject
 	private AccountRepository accountRepository;
 	private CustomerRepository customerRepository;
+	private BillRepository billRepository;
+	private DepositRepository depositRepository;
+	private WithdrawalRepository withdrawalRepository;
 
 	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAccounts() {
@@ -66,7 +76,7 @@ public class AccountController {
 
 	}
 	
-	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteAccount(@PathVariable long id) {
 		Account account=accountRepository.findOne(id);
 		accountRepository.delete(id);
@@ -74,5 +84,62 @@ public class AccountController {
 
 	}	
 	
+    @RequestMapping(value = "/accounts/{accountId}/customer", method = RequestMethod.GET)
+    public ResponseEntity<?> getCustomerByAccount(@PathVariable long accountId){
+        Account a = accountRepository.findOne(accountId);
+        Customer c = a.getCustomer();
+        return new ResponseEntity<>(c, HttpStatus.OK);
+    }
+    
+	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllBillsByAccount(@PathVariable long account_id){
+		List<Bill> billList= (List<Bill>)billRepository.findAll();
+		return new ResponseEntity<>(billList, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.POST)
+	public ResponseEntity<?> createBill(@RequestBody Bill bill, @PathVariable long account_id){
+		if (!accountRepository.exists(account_id)){
+			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
+		}else{
+			billRepository.save(bill);
+		}
+		return new ResponseEntity<>(bill, HttpStatus.ACCEPTED);
+	}
+	
+	@RequestMapping(value = "/accounts/{accountId}/deposits", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllDepositsByAccount(@PathVariable long account_id){
+		List<Deposit> depositList = (List<Deposit>) depositRepository.findAll();
+		return new ResponseEntity<>(depositList, HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/accounts/{accountId}/deposits", method = RequestMethod.POST)
+	public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable long account_id){
+		if (!accountRepository.exists(account_id)){
+			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
+		}else{
+			depositRepository.save(deposit);
+		}
+		return new ResponseEntity<>(deposit, HttpStatus.ACCEPTED);
+	}
+
+	@RequestMapping(value = "/accounts/{accountId}/withdrawals", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllWithdrawalsByAccount(@PathVariable long account_id){
+		List<Withdrawal> withdrawalList = (List<Withdrawal>) withdrawalRepository.findAll();
+		return new ResponseEntity<>(withdrawalList, HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/accounts/{accountId}/withdrawals", method = RequestMethod.POST)
+	public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long account_id){
+		if (!accountRepository.exists(account_id)){
+			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
+		}else{
+			withdrawalRepository.save(withdrawal);
+		}
+		return new ResponseEntity<>(withdrawal, HttpStatus.ACCEPTED);
+	}
+
 	
 }
