@@ -1,9 +1,15 @@
 package io.zipcoder.domain;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+
 import java.util.Set;
 
 @Entity
@@ -12,10 +18,18 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "CUSTOMER_ID")
     private long id;
 
+    @Column(name = "FIRST_NAME")
     private String first_name;
+    
+    @Column(name = "LAST_NAME")
     private String last_name;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "CUSTOMER_ID")
+    @OrderBy
     private Set<Address> address;
 
     public long getId() {

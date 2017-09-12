@@ -1,5 +1,6 @@
 package io.zipcoder.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,12 +11,22 @@ public class Address {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
 	public Long id;
 	
+	@Column(name = "STREET_NUMBER")
 	public String street_number;
+	
+	@Column(name = "STREET_NAME")
 	public String street_name;
+	
+	@Column(name = "CITY")
 	public String City;
+	
+	@Column(name = "STATE")
 	public String state;
+	
+	@Column(name = "ZIP")
 	public String zip;
 	
 	
