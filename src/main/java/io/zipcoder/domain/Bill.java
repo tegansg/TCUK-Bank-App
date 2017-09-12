@@ -27,7 +27,7 @@ public class Bill {
 	Integer recurring_date;
 	String upcoming_date_payment;
 	double payment_amount;
-	String account_id;
+	Long account_id;
 	
 	
 	public String getStatus() {
