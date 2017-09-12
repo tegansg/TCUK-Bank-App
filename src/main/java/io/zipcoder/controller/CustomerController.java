@@ -29,7 +29,7 @@ public class CustomerController {
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getCustomer(@PathVariable long id){
         Customer c = customerRepository.findOne(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(c, HttpStatus.OK);
     }
 
 //    @RequestMapping(value = "/accounts/{accountId}/customer", method = RequestMethod.GET)
@@ -42,7 +42,7 @@ public class CustomerController {
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Customer>> getAllCustomers(){
         Iterable<Customer> allCustomers = customerRepository.findAll();
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(allCustomers, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/customers", method = RequestMethod.POST)
@@ -72,9 +72,9 @@ public class CustomerController {
             c.setLast_name(customer.getLast_name());
         } else {
             createCustomer(customer);
-            return new ResponseEntity(HttpStatus.CREATED);
+            return new ResponseEntity(customer, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(c, HttpStatus.OK);
     }
 
 }
