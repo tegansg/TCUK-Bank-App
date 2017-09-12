@@ -1,9 +1,9 @@
 package io.zipcoder.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
 
 @Entity
 public class Account {
@@ -12,10 +12,23 @@ public class Account {
 		SAVINGS, CHECKING, CREDIT;
 	}
 
+	@Column(name = "Account_type")
+
 	public Type type;
+
+	@Column(name = "Account_nickname")
+
 	private String nickname;
+
+	@Column(name = "Account_rewards")
+
 	private int rewards;
+
+	@Column(name = "Account_balance")
+
 	private double balance;
+	@Column(name = "Account_customer")
+
 	private Customer customer;
 
 	@Id
