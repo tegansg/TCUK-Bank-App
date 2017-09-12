@@ -44,12 +44,12 @@ public class AccountController {
 //		return new ResponseEntity<Account>(allAccounts, HttpStatus.OK);
 //
 //	}
-	@RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
-	public ResponseEntity<?> createAccount(@PathVariable Account account) {
-		Account newAccount=accountRepository.save(account);
-		return new ResponseEntity<Account>(newAccount, HttpStatus.CREATED);
-
-	}
+//	@RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
+//	public ResponseEntity<?> createAccount(@PathVariable Account account) {
+//		Account newAccount=accountRepository.save(account);
+//		return new ResponseEntity<Account>(newAccount, HttpStatus.CREATED);
+//
+//	}
 	
 	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable long id) {
@@ -67,7 +67,7 @@ public class AccountController {
 	}
 	
 	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateAccount(@PathVariable long id) {
+	public ResponseEntity<?> deleteAccount(@PathVariable long id) {
 		Account account=accountRepository.findOne(id);
 		accountRepository.delete(id);
 		return new ResponseEntity<Account>(account, HttpStatus.OK);
