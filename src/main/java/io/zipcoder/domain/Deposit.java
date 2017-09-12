@@ -13,28 +13,62 @@ public class Deposit {
 	
 	@Column(name = "DEPOSIT_ID")
 	private long id;
+	
+	@Column(name = "DEPOSIT_STATUS")
+	private String status;
+	
+	@Column(name = "DEPOSIT_TRANSACTION_DATE")
+	private String transaction_date;
 
-	private enum Type{
+	public enum Type {
 		P2P, DEPOSIT, WITHDRAWAL
 	}
 	
-	private enum Status{
-		PENDING, CANCELLED, COMPLETED
-	};
+	@Column(name = "DEPOSIT_TYPE")
+	private String type;
 	
+
 	@Column(name = "DEPOSIT_PAYEE_ID")
 	private long payee_id;
 	
-	private enum Medium{
+	public enum Medium {
 		BALANCE, REWARDS
-	};
+	}
 	
+	@Column(name = "DEPOSIT_MEDIUM")
+	private String medium;
+
 	@Column(name = "DEPOSIT_AMOUNT")
 	private double amount;
 	
 	@Column(name = "DEPOSIT_DESCRIPTION")
 	private String description;
 	
+	
+	
+	public String getMedium() {
+		return medium;
+	}
+
+	public void setMedium(Medium medium) {
+		this.medium = medium.toString();
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type.toString();
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status.toString();
+	}
 	
 	public long getId() {
 		return id;
@@ -59,6 +93,5 @@ public class Deposit {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 
 }
