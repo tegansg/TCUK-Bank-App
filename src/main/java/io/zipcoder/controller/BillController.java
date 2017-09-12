@@ -53,6 +53,14 @@ public class BillController {
 //		return new ResponseEntity<>("Accepted bill modification", HttpStatus.ACCEPTED);
 //	}
 	
+	@RequestMapping(value = "/bills", method = RequestMethod.POST)
+	public ResponseEntity<?> createBill(@RequestBody Bill bill){
+	
+			billRepository.save(bill);
+			return new ResponseEntity<>("Accepted bill modification", HttpStatus.ACCEPTED);
+		}
+	
+	
 	@RequestMapping(value = "/bills/{billId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateBill(@RequestBody Bill bill, @PathVariable Long bill_id){
 		
