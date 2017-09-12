@@ -9,28 +9,28 @@ import javax.persistence.Id;
 public class Withdrawal {
 	@Id
 	@GeneratedValue
-	@Column(name = "Withdrawal_ID")
+	@Column(name = "WITHDRAWAL_ID")
 	private long id;
-	@Column(name = "Transaction_Type")
 
+	@Column(name = "TRANSACTION_TYPE")
 	private String type;
-	@Column(name = "Withdrawal_transaction_date")
 
+	@Column(name = "TRANSACTION_DATE")
 	private String transaction_date;
-	@Column(name = "Withdrawal_status")
 
+	@Column(name = "WITHDRAWAL_STATUS")
 	private String status;
-	@Column(name = "Payer_ID")
 
+	@Column(name = "PAYER_ID")
 	private long payer_id;
-	@Column(name = "Withdrawal_type")
 
+	@Column(name = "WITHDRAWAL_TYPE")
 	private String medium;
-	@Column(name = "Withdrawal_amount")
 
+	@Column(name = "WITHDRAWAL_AMOUNT")
 	private double amount;
-	@Column(name = "Withdrawal_description")
 
+	@Column(name = "WITHDRAWAL_DESCRIPTION")
 	private String description;
 
 	public String getType() {
