@@ -1,5 +1,6 @@
 package io.zipcoder.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class Bill {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@Column(name = "BILL_ID")
 	private Long id;
 	
 	String status;
