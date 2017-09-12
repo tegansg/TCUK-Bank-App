@@ -19,12 +19,12 @@ public class BillController {
 	@Inject
 	BillRepository billRepository;
 	
-	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllBillsbyAccount(@PathVariable Long account_id){
-		
-		
-		return null;
-	}
+//	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
+//	public ResponseEntity<?> getAllBillsbyAccount(@PathVariable Long account_id){
+//		
+//		
+//		return null;
+//	}
 	
 	@RequestMapping(value = "/bills/{billId}", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllBillbyId(@PathVariable Long bill_id){
@@ -36,22 +36,22 @@ public class BillController {
 		return new ResponseEntity<>("No bill for this ID", HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customer_id){
-		
-		
-		return null;
-	}
+//	@RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
+//	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customer_id){
+//		
+//		
+//		return null;
+//	}
 	
-	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.POST)
-	public ResponseEntity<?> createBill(@RequestBody Bill bill, @PathVariable Long account_id){
-		
-		// if account_id doesn't exist, return 404 error
-		//else create bill to account_id
-		billRepository.save(bill);
-		
-		return new ResponseEntity<>("Accepted bill modification", HttpStatus.ACCEPTED);
-	}
+//	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.POST)
+//	public ResponseEntity<?> createBill(@RequestBody Bill bill, @PathVariable Long account_id){
+//		
+//		// if account_id doesn't exist, return 404 error
+//		//else create bill to account_id
+//		billRepository.save(bill);
+//		
+//		return new ResponseEntity<>("Accepted bill modification", HttpStatus.ACCEPTED);
+//	}
 	
 	@RequestMapping(value = "/bills/{billId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateBill(@RequestBody Bill bill, @PathVariable Long bill_id){
