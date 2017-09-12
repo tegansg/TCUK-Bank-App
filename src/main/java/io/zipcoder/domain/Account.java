@@ -3,7 +3,11 @@ package io.zipcoder.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Account {
@@ -11,30 +15,30 @@ public class Account {
 	public enum Type {
 		SAVINGS, CHECKING, CREDIT;
 	}
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ACCOUNT_ID")
+	private long id;
 
-	@Column(name = "Account_type")
-
+	@Column(name = "ACCOUNT_TYPE")
 	public Type type;
 
-	@Column(name = "Account_nickname")
-
+	@Column(name = "ACCOUNT_NICKNAME")
 	private String nickname;
 
-	@Column(name = "Account_rewards")
-
+	@Column(name = "ACCOUNT_REWARDS")
 	private int rewards;
 
-	@Column(name = "Account_balance")
-
+	@Column(name = "ACCOUNT_BALANCE")
 	private double balance;
-	@Column(name = "Account_customer")
-
+	
+	@OneToOne
+	@JoinColumn(name = "ACCOUNT_ID")
+	@OrderBy
 	private Customer customer;
 
-	@Id
-	@GeneratedValue
-	// generates random ID
-	private long id;
+
 
 	public String getNickname() {
 		return nickname;
