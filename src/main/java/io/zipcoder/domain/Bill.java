@@ -16,17 +16,34 @@ public class Bill {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	//@Column(name = "BILL_ID")
+	@Column(name = "BILL_ID")
 	private Long id;
 	
+	@Column(name = "STATUS")
 	String status;
+	
+	@Column(name = "PAYEE")
 	String payee;
+	
+	@Column(name = "NICKNAME")
 	String nickname;
+	
+	@Column(name = "CREATION_DATE")
 	String creation_date;
+	
+	@Column(name = "PAYMENT_DATE")
 	String payment_date;
+	
+	@Column(name = "RECURRING_DATE")
 	Integer recurring_date;
+	
+	@Column(name = "UPCOMING_DATE_PAYMENT")
 	String upcoming_date_payment;
+	
+	@Column(name = "PAYMENT_AMOUNT")
 	double payment_amount;
+	
+	@Column(name = "ACCOUNT_ID")
 	Long account_id;
 	
 	
