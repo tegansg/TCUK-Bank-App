@@ -18,7 +18,7 @@ public class DepositController {
 	private DepositRepository depositRepository;
 	private AccountRepository accountRepository;
 	
-	@Autowired "Enumbody"
+	//@Autowired "Enumbody"
 	
     public DepositController(DepositRepository depositRepository){
         this.depositRepository = depositRepository;

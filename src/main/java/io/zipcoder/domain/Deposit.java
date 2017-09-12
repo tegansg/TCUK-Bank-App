@@ -8,9 +8,14 @@ import javax.persistence.Id;
 
 @Entity
 public class Deposit {
+	
+	public enum Type {
+		P2P, DEPOSIT, WITHDRAWAL
+	}
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	
 	@Column(name = "DEPOSIT_ID")
 	private long id;
 	
@@ -19,10 +24,6 @@ public class Deposit {
 	
 	@Column(name = "DEPOSIT_TRANSACTION_DATE")
 	private String transaction_date;
-
-	public enum Type {
-		P2P, DEPOSIT, WITHDRAWAL
-	}
 	
 	@Column(name = "DEPOSIT_TYPE")
 	private String type;
