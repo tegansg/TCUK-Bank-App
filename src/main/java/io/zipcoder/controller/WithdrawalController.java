@@ -45,13 +45,14 @@ public class WithdrawalController {
 			response=new ResponseEntity<>("Wtihdrawal Id does not exist", HttpStatus.NOT_FOUND);
 		}
 		else{
+			withdrawal.setId(withdrawalId);
+			withdrawalRepository.save(withdrawal);
 			Account account = accountRepository.findOne(withdrawal.getPayer_id());
 			account.decreaseBalance(withdrawal.getAmount());
 			response=new ResponseEntity<>("Accepted withdrawal", HttpStatus.ACCEPTED);
 		}
 		
 		return response;
-
 	}
 
 	
@@ -68,9 +69,6 @@ public class WithdrawalController {
 			response = new ResponseEntity<>("Id has been deleted, balance updated", HttpStatus.NO_CONTENT);
 		}
 		return response;
-		
-		
-
 	}	
 
 }

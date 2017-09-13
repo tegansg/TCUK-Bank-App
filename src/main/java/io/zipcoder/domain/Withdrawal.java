@@ -21,7 +21,7 @@ public class Withdrawal {
 	@Column(name = "WITHDRAWAL_STATUS")
 	private String status;
 
-	@Column(name = "PAYER_ID") //account id
+	@Column(name = "PAYER_ID") 
 	private long payer_id;
 
 	@Column(name = "WITHDRAWAL_TYPE")
@@ -29,6 +29,10 @@ public class Withdrawal {
 
 	@Column(name = "WITHDRAWAL_AMOUNT")
 	private double amount;
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	@Column(name = "WITHDRAWAL_DESCRIPTION")
 	private String description;
