@@ -1,5 +1,7 @@
 package io.zipcoder.controller;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,33 +19,43 @@ import io.zipcoder.repositories.DepositRepository;
 
 @RestController
 public class DepositController {
+	
+	@Inject
 	private DepositRepository depositRepository;
-	//private AccountRepository accountRepository;
 	
-//	@Autowired //"Enumbody"
-
-	
-    public DepositController(DepositRepository depositRepository){
-        this.depositRepository = depositRepository;
-    }
-	
-    @RequestMapping(value = "/deposit/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getId(@PathVariable long id){
-        Deposit d = depositRepository.findOne(id);
-        return new ResponseEntity<>(d, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "/deposit/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateDeposit(@RequestBody Deposit deposit, @PathVariable long id){
-
-        depositRepository.save(deposit);
-        return new ResponseEntity<>(deposit, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "/deposit/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteDeposit(@PathVariable long id){
-    	depositRepository.delete(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+    @RequestMapping(value = "/deposit/{depositId}", method = RequestMethod.GET)
+    public ResponseEntity<?> getId(@PathVariable long depositId){
+    	if(!depositRepository.exists(depositId)) {
+    		return new ResponseEntity<>("Deposit does not exist", HttpStatus.NOT_FOUND);
+    	} else {
+            Deposit deposit = depositRepository.findOne(depositId);
+            return new ResponseEntity<>(deposit, HttpStatus.OK);
+    	}
     	
     }
+    
+    @RequestMapping(value = "/deposit/{depositId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateDeposit(@RequestBody Deposit deposit, @PathVariable long depositId){
+    	if(!depositRepository.exists(depositId)){
+    		return new ResponseEntity<>("Deposit does not exist", HttpStatus.NOT_FOUND);
+    	} else {
+    		depositRepository.save(deposit);
+    		return new ResponseEntity<>(deposit, HttpStatus.OK);
+    	}
+    }
+    
+    @RequestMapping(value = "/deposit/{depositId}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteDeposit(@PathVariable long depositId) {
+    	if(!depositRepository.exists(depositId)) {
+    		return new ResponseEntity<>("Deposit does not exist", HttpStatus.NOT_FOUND);
+    	} else {
+    		Deposit deposit = depositRepository.findOne(depositId);
+    		depositRepository.delete(deposit);
+    		return new ResponseEntity<>(HttpStatus.OK);
+    	}
+    
+    }
+
+    
+    
 }
