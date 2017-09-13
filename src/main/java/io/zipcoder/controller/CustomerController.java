@@ -3,8 +3,10 @@ package io.zipcoder.controller;
 // TODO below
 
 import io.zipcoder.domain.Account;
+import io.zipcoder.domain.Bill;
 import io.zipcoder.domain.Customer;
 import io.zipcoder.repositories.AccountRepository;
+import io.zipcoder.repositories.BillRepository;
 import io.zipcoder.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
+import java.util.Iterator;
 import java.util.Set;
 
 @RestController
@@ -20,6 +23,7 @@ public class CustomerController {
 
     private CustomerRepository customerRepository;
     private AccountRepository accountRepository;
+    private BillRepository billRepository;
     private Set<Customer> customerList;
 
     @Autowired
@@ -41,18 +45,21 @@ public class CustomerController {
 //    }
 
 //TODO fill this in
-    	@RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customer_id){
+    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId){
+        //Find accounts by customers then find bills by account
+        Customer c = customerRepository.findOne(customerId);
+        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
+        Iterable<Bill> bills =
 
-        //Write an SQL query in BillRepo
 
-		return null;
+		return new ResponseEntity<>(bills, HttpStatus.OK);
 	}
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAccounts(long customerId) {
 
-        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
+
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
@@ -61,7 +68,7 @@ public class CustomerController {
 
         Customer c = customerRepository.findOne(customerId);
         account.setCustomer(c);
-        account = accountRepository.save(account);
+        accountRepository.save(account);
 		return new ResponseEntity<>(account, HttpStatus.CREATED);
 
 	}
