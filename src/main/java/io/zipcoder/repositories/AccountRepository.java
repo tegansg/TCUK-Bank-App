@@ -14,5 +14,4 @@ public interface AccountRepository extends CrudRepository<Account, Long>{
 
     @Query(value = query, nativeQuery = true)
     public Iterable<Account> findAccountsByCustomer(long customerId);
-
 }

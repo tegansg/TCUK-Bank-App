@@ -115,6 +115,7 @@ public class CustomerController {
         if(c.getId() == id){
             c.setFirst_name(customer.getFirst_name());
             c.setLast_name(customer.getLast_name());
+            customerRepository.save(c);
         } else {
             createCustomer(customer);
             return new ResponseEntity(customer, HttpStatus.CREATED);
