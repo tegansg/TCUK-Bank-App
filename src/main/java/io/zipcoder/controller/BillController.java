@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.zipcoder.domain.Account;
 import io.zipcoder.domain.Bill;
+import io.zipcoder.domain.Customer;
 import io.zipcoder.repositories.BillRepository;
 
 
@@ -19,10 +20,10 @@ import io.zipcoder.repositories.BillRepository;
 public class BillController {
 	
 	@Inject
-	BillRepository billRepository;
+	private BillRepository billRepository;
 	
 	@RequestMapping(value = "/bills/{billId}", method = RequestMethod.GET)
-	public ResponseEntity<?> getBillbyId(@PathVariable Long billId){
+	public ResponseEntity<?> getBillbyId(@PathVariable long billId){
 		ResponseEntity<?> response = null;
 		if(!billRepository.exists(billId)){
 			response =  new ResponseEntity<>("Error fetching bill", HttpStatus.NOT_FOUND);
@@ -36,36 +37,38 @@ public class BillController {
 	
 	
 	@RequestMapping(value = "/bills/{billId}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateBill(@RequestBody Bill bill, @PathVariable Long billId){
+	public ResponseEntity<?> updateBill(@RequestBody Bill bill, @PathVariable long billId){
 		ResponseEntity<?> response = null;
 		if(!billRepository.exists(billId)){	
-			response = new ResponseEntity<>("No bill for this ID", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("No bill for this ID", HttpStatus.NOT_FOUND);
 		} else {
-			bill.setId(billId);
-			billRepository.save(bill);
-			response = new ResponseEntity<>("Accepted bill modification", HttpStatus.ACCEPTED);
+			response = new ResponseEntity<>(HttpStatus.OK);
+			Bill billNew = billRepository.findOne(billId);
+			billNew.setId(billId);
+			billRepository.save(billNew);
+			//response = new ResponseEntity<>("Accepted bill modification", HttpStatus.ACCEPTED);
+			response= new ResponseEntity<Bill>(bill, HttpStatus.OK);
 		}
 		return response;
-
-
 	}
 	
 	@RequestMapping(value = "/bills/{billId}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteBill(@PathVariable Long billId){
-		ResponseEntity<?> response = null;
-		if(!billRepository.exists(billId)){
-			response = new ResponseEntity<>("No bill for this ID", HttpStatus.NOT_FOUND);
-		} else {
-			
+	public ResponseEntity<?> deleteBill(@PathVariable long billId){
+//		ResponseEntity<?> response = null;
+//		if(!billRepository.exists(billId)){
+//			response = new ResponseEntity<>("No bill for this ID", HttpStatus.NOT_FOUND);
+//		} else {
+//			
+//			billRepository.delete(billId);
+//			response = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//		}
+//		return response;
+			Bill bill = billRepository.findOne(billId);
 			billRepository.delete(billId);
-			response = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<Bill>(bill, HttpStatus.OK);
+
 		}
-		return response;
-		
 	}
 	
-
-	
-}
 	
 
