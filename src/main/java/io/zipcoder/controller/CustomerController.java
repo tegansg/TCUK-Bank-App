@@ -44,24 +44,24 @@ public class CustomerController {
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
 
-//TODO fill this in
-    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId){
-        //Find accounts by customers then find bills by account
-        Customer c = customerRepository.findOne(customerId);
-        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
-        Iterable<Bill> bills =
-
-
-		return new ResponseEntity<>(bills, HttpStatus.OK);
-	}
-
-    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllAccounts(long customerId) {
-
-
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
-    }
+////TODO fill this in
+//    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
+//	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId){
+//        //Find accounts by customers then find bills by account
+//        Customer c = customerRepository.findOne(customerId);
+//        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
+//        Iterable<Bill> bills =
+//
+//
+//		return new ResponseEntity<>(bills, HttpStatus.OK);
+//	}
+//
+//    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
+//	public ResponseEntity<?> getAllAccounts(long customerId) {
+//
+//
+//        return new ResponseEntity<>(accounts, HttpStatus.OK);
+//    }
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
 	public ResponseEntity<?> createAccount(@PathVariable long customerId, @RequestBody Account account) {
