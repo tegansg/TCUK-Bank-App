@@ -21,7 +21,7 @@ public class WithdrawalController {
 	
 	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.GET)
 	public ResponseEntity<?> getWithdrawal(@PathVariable long withdrawalId) {
-		ResponseEntity response = null;
+		ResponseEntity<?> response = null;
 		if(!withdrawalRepository.exists(withdrawalId)){
 			response = new ResponseEntity<>("Error fetching ID", HttpStatus.NOT_FOUND);
 		} else {
@@ -34,7 +34,7 @@ public class WithdrawalController {
 	
 	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long withdrawalId) {
-		ResponseEntity response=null;
+		ResponseEntity<?> response=null;
 		if (!withdrawalRepository.exists(withdrawalId)){
 			response=new ResponseEntity<>("Wtihdrawal Id does not exist", HttpStatus.NOT_FOUND);
 		}
@@ -50,7 +50,7 @@ public class WithdrawalController {
 	
 	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteWithdrawal(@PathVariable long withdrawalId) {
-		ResponseEntity response=null;
+		ResponseEntity<?> response=null;
 		if(!withdrawalRepository.exists(withdrawalId)){
 			response = new ResponseEntity<>("Id does not exist", HttpStatus.NOT_FOUND);
 		} else {

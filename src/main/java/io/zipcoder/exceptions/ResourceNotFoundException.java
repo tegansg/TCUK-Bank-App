@@ -20,5 +20,11 @@ public class ResourceNotFoundException extends RuntimeException{
 		super(message);
 		
 	}
+	
+//	public void verifyBill(Long bill_id) {
+//		//if doesn't exist throws exception
+//		if(!billRepository.exists(bill_id)){
+//			throw new ResourceNotFoundException();
+//		}
 
 }
