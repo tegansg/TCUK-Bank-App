@@ -57,7 +57,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
-	public ResponseEntity<?> createAccount(@PathVariable long customerId, @PathVariable Account account) {
+	public ResponseEntity<?> createAccount(@PathVariable long customerId, @RequestBody Account account) {
 
         Customer c = customerRepository.findOne(customerId);
         account.setCustomer(c);
