@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.zipcoder.domain.Account;
 import io.zipcoder.domain.Bill;
 import io.zipcoder.repositories.BillRepository;
 
@@ -26,6 +27,7 @@ public class BillController {
 		if(!billRepository.exists(billId)){
 			response =  new ResponseEntity<>("Error fetching bill", HttpStatus.NOT_FOUND);
 		} else {
+			
 			Bill bill = billRepository.findOne(billId);
 			response = new ResponseEntity<>(bill , HttpStatus.OK);
 		}
@@ -39,6 +41,7 @@ public class BillController {
 		if(!billRepository.exists(billId)){	
 			response = new ResponseEntity<>("No bill for this ID", HttpStatus.NOT_FOUND);
 		} else {
+			bill.setId(billId);
 			billRepository.save(bill);
 			response = new ResponseEntity<>("Accepted bill modification", HttpStatus.ACCEPTED);
 		}
@@ -53,8 +56,8 @@ public class BillController {
 		if(!billRepository.exists(billId)){
 			response = new ResponseEntity<>("No bill for this ID", HttpStatus.NOT_FOUND);
 		} else {
-			Bill bill = billRepository.findOne(billId);
-			billRepository.delete(bill);
+			
+			billRepository.delete(billId);
 			response = new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return response;

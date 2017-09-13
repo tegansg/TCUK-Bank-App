@@ -89,19 +89,38 @@ public class CustomerController {
         return new ResponseEntity<>(newCustomerUri, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateCustomer(@RequestBody Customer customer, @PathVariable long id){
+//    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
+//    public ResponseEntity updateCustomer(@RequestBody Customer customer, @PathVariable long id){
+//
+//        if(customerRepository.exists(id)){
+//            Customer c = customerRepository.findOne(id);
+//            c.setFirst_name(customer.getFirst_name());
+//            c.setLast_name(customer.getLast_name());
+//            c.setAddress(customer.getAddress());
+//            customerRepository.save(c);
+//            return new ResponseEntity<>(c, HttpStatus.OK);
+//        } else {
+//            customerRepository.save(customer);
+//            return new ResponseEntity<>(customer, HttpStatus.CREATED);
+//        }
+//    }
 
-        if(customerRepository.exists(id)){
+    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateCustomer(@RequestBody Customer customer, @PathVariable long id) {
+
+        if (!customerRepository.exists(id)) {
+            return new ResponseEntity<>("Customer does not exist", HttpStatus.NOT_FOUND);
+        } else {
             Customer c = customerRepository.findOne(id);
+
             c.setFirst_name(customer.getFirst_name());
             c.setLast_name(customer.getLast_name());
             c.setAddress(customer.getAddress());
+            customer = c;
+
             customerRepository.save(c);
-            return new ResponseEntity<>(c, HttpStatus.OK);
-        } else {
-            customerRepository.save(customer);
-            return new ResponseEntity<>(customer, HttpStatus.CREATED);
         }
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+
     }
 }
