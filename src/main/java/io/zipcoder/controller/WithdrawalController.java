@@ -20,34 +20,46 @@ public class WithdrawalController {
 	private WithdrawalRepository withdrawalRepository;
 	
 	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.GET)
-	public ResponseEntity<?> getWithdrawal(@PathVariable long id) {
-		Withdrawal withdrawal = withdrawalRepository.findOne(id);
-		return new ResponseEntity<Withdrawal>(withdrawal, HttpStatus.OK);
+	public ResponseEntity<?> getWithdrawal(@PathVariable long withdrawalId) {
+		ResponseEntity response = null;
+		if(!withdrawalRepository.exists(withdrawalId)){
+			response = new ResponseEntity<>("Error fetching ID", HttpStatus.NOT_FOUND);
+		} else {
+			Withdrawal withdrawal = withdrawalRepository.findOne(withdrawalId);
+			response = new ResponseEntity<Withdrawal>(withdrawal, HttpStatus.OK);
+		}
+		return response;
 
 	}
 	
-	
-	
 	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long id) {
+	public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long withdrawalId) {
 		ResponseEntity response=null;
-		if (!withdrawalRepository.exists(id)){
-			response=new ResponseEntity<Withdrawal>(HttpStatus.CREATED);
+		if (!withdrawalRepository.exists(withdrawalId)){
+			response=new ResponseEntity<>("Wtihdrawal Id does not exist", HttpStatus.NOT_FOUND);
 		}
 		else{
-			response=new ResponseEntity<Withdrawal>(HttpStatus.OK);
+			withdrawalRepository.save(withdrawal);
+			response=new ResponseEntity<>("Accepted withdrawal", HttpStatus.ACCEPTED);
 		}
-		withdrawalRepository.save(withdrawal);
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+		return response;
 
 	}
 
 	
 	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteWithdrawal(@PathVariable long id) {
-		Withdrawal withdrawal=withdrawalRepository.findOne(id);
-		withdrawalRepository.delete(id);
-		return new ResponseEntity<Withdrawal>(withdrawal, HttpStatus.OK);
+	public ResponseEntity<?> deleteWithdrawal(@PathVariable long withdrawalId) {
+		ResponseEntity response=null;
+		if(!withdrawalRepository.exists(withdrawalId)){
+			response = new ResponseEntity<>("Id does not exist", HttpStatus.NOT_FOUND);
+		} else {
+			withdrawalRepository.delete(withdrawalId);
+			response = new ResponseEntity<>("Id has been deleted", HttpStatus.NO_CONTENT);
+		}
+		return response;
+		
+		
 
 	}	
 
