@@ -28,9 +28,13 @@ public class AccountController {
 
 	@Inject
 	private AccountRepository accountRepository;
+	@Inject
 	private CustomerRepository customerRepository;
+	@Inject
 	private BillRepository billRepository;
+	@Inject
 	private DepositRepository depositRepository;
+	@Inject
 	private WithdrawalRepository withdrawalRepository;
 
 	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
