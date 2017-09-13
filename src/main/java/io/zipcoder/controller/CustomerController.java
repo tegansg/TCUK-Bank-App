@@ -32,7 +32,7 @@ public class CustomerController {
         Customer c = customerRepository.findOne(id);
         return new ResponseEntity<>(c, HttpStatus.OK);
     }
-
+// commented out and moved to AccountController
 //    @RequestMapping(value = "/accounts/{accountId}/customer", method = RequestMethod.GET)
 //    public ResponseEntity<?> getCustomerByAccount(@PathVariable long accountId){
 //        Account a = accountRepository.findOne(accountId);
@@ -40,20 +40,19 @@ public class CustomerController {
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
 
-//    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
-//	public ResponseEntity<?> getAllAccounts(long customerId) {
-//        Customer c = customerRepository.findOne(customerId);
-//        //Iterable<Customer> allAccountsForCustomer = c.getAccounts();
-//
-//        return new ResponseEntity<>(allAccountsForCustomer, HttpStatus.OK);
-//    }
+    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllAccounts(long customerId) {
+
+        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
 	public ResponseEntity<?> createAccount(@PathVariable long customerId, @PathVariable Account account) {
 
         Customer c = customerRepository.findOne(customerId);
-        account = accountRepository.save(account);
         account.setCustomer(c);
+        account = accountRepository.save(account);
 		return new ResponseEntity<>(account, HttpStatus.CREATED);
 
 	}
