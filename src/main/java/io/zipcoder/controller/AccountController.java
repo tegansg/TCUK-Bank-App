@@ -114,10 +114,13 @@ public class AccountController {
 	public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable long accountId) {
 		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
-		} else {
+		} 
+		else {
+			deposit.setPayee_id(accountId);
 			depositRepository.save(deposit);
+			return new ResponseEntity<>(deposit, HttpStatus.ACCEPTED);
 		}
-		return new ResponseEntity<>(deposit, HttpStatus.ACCEPTED);
+		
 	}
 
 	@RequestMapping(value = "/accounts/{accountId}/withdrawals", method = RequestMethod.GET)
@@ -132,9 +135,11 @@ public class AccountController {
 		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
 		} else {
+			withdrawal.setPayer_id(accountId);
 			withdrawalRepository.save(withdrawal);
+			return new ResponseEntity<>(withdrawal, HttpStatus.ACCEPTED);
 		}
-		return new ResponseEntity<>(withdrawal, HttpStatus.ACCEPTED);
+		
 	}
 
 }
