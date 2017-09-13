@@ -92,18 +92,16 @@ public class CustomerController {
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateCustomer(@RequestBody Customer customer, @PathVariable long id){
 
-        Customer c = customerRepository.findOne(id);
-
-        if(c.getId() == id){
+        if(customerRepository.exists(id)){
+            Customer c = customerRepository.findOne(id);
             c.setFirst_name(customer.getFirst_name());
             c.setLast_name(customer.getLast_name());
             c.setAddress(customer.getAddress());
             customerRepository.save(c);
+            return new ResponseEntity<>(c, HttpStatus.OK);
         } else {
             customerRepository.save(customer);
-            return new ResponseEntity(customer, HttpStatus.CREATED);
+            return new ResponseEntity<>(customer, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(c, HttpStatus.OK);
     }
-
 }
