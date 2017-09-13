@@ -22,6 +22,7 @@ import java.util.Set;
 
 @RestController
 public class CustomerController {
+
     @Inject
     private CustomerRepository customerRepository;
     @Inject
@@ -41,25 +42,6 @@ public class CustomerController {
         Customer c = customerRepository.findOne(id);
         return new ResponseEntity<>(c, HttpStatus.OK);
     }
-
-
-//    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
-//	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId){
-//
-//        // for each account in the list of accounts we want to find the associated accountId
-//        // then we can find the bills associated with that account and therefore, that customer
-//
-//        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
-//        Iterator<Account> iterator = accounts.iterator();
-//
-//        while (iterator.hasNext()){
-//            Account account = iterator.next();
-//            long accountId = account.getId();
-//
-//        }
-//
-//		return new ResponseEntity<>(bills, HttpStatus.OK);
-//	}
 
     @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
     public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId){
@@ -115,9 +97,10 @@ public class CustomerController {
         if(c.getId() == id){
             c.setFirst_name(customer.getFirst_name());
             c.setLast_name(customer.getLast_name());
+            c.setAddress(customer.getAddress());
             customerRepository.save(c);
         } else {
-            createCustomer(customer);
+            customerRepository.save(customer);
             return new ResponseEntity(customer, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(c, HttpStatus.OK);
