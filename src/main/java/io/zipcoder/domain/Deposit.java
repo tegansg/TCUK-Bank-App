@@ -29,9 +29,17 @@ public class Deposit {
 	private String type;
 	
 
-	@Column(name = "DEPOSIT_PAYEE_ID")
+	@Column(name = "DEPOSIT_PAYEE_ID") //account id
 	private long payee_id;
 	
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setTransaction_date(String transaction_date) {
+		this.transaction_date = transaction_date;
+	}
+
 	public enum Medium {
 		BALANCE, REWARDS
 	}
