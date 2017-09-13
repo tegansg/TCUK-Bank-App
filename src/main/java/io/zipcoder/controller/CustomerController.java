@@ -75,12 +75,7 @@ public class CustomerController {
     @RequestMapping(value = "/customers", method = RequestMethod.POST)
     public ResponseEntity<?> createCustomer(@RequestBody Customer customer){
 
-        Customer newCustomer = null;
-        newCustomer.setLast_name(customer.getLast_name());
-        newCustomer.setFirst_name(customer.getFirst_name());
-        newCustomer.setAddress(customer.getAddress());
-
-        customerRepository.save(newCustomer);
+        customerRepository.save(customer);
 
         URI newCustomerUri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
