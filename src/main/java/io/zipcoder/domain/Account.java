@@ -1,5 +1,7 @@
 package io.zipcoder.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +14,7 @@ import javax.persistence.OrderBy;
 @Entity
 public class Account {
 	// when serialized should print out as a string
-	public enum Type {
+	public enum Type implements Serializable{
 		SAVINGS, CHECKING, CREDIT;
 	}
 	
