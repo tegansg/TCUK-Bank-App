@@ -16,6 +16,10 @@ import javax.persistence.Id;
 @Entity
 public class Bill {
 	
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "BILL_ID")
