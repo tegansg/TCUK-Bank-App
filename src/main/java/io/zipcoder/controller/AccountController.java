@@ -105,8 +105,11 @@ public class AccountController {
 
 	@RequestMapping(value = "/accounts/{accountId}/deposits", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllDepositsByAccount(@PathVariable long accountId) {
-		List<Deposit> depositList = (List<Deposit>) depositRepository.findAll();
-		return new ResponseEntity<>(depositList, HttpStatus.OK);
+		if (!accountRepository.exists(accountId)) {
+			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
+		} 
+		Iterable<Deposit> accountDeposits = depositRepository.getDepositsByAccount();
+		return new ResponseEntity<>(accountDeposits, HttpStatus.OK);
 
 	}
 
@@ -125,8 +128,11 @@ public class AccountController {
 
 	@RequestMapping(value = "/accounts/{accountId}/withdrawals", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllWithdrawalsByAccount(@PathVariable long accountId) {
-		List<Withdrawal> withdrawalList = (List<Withdrawal>) withdrawalRepository.findAll();
-		return new ResponseEntity<>(withdrawalList, HttpStatus.OK);
+		if (!accountRepository.exists(accountId)) {
+			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
+		} 
+		Iterable<Withdrawal> accountWithdrawals = withdrawalRepository.getWithdrawalsByAccount();
+		return new ResponseEntity<>(accountWithdrawals, HttpStatus.OK);
 
 	}
 
