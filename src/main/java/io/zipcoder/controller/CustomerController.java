@@ -1,5 +1,7 @@
 package io.zipcoder.controller;
 
+// TODO below
+
 import io.zipcoder.domain.Account;
 import io.zipcoder.domain.Customer;
 import io.zipcoder.repositories.AccountRepository;
@@ -10,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Set;
 
 @RestController
@@ -39,6 +39,15 @@ public class CustomerController {
 //        // Customer c = a.getCustomer;
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
+
+//TODO fill this in
+    	@RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customer_id){
+
+        //Write an SQL query in BillRepo
+
+		return null;
+	}
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAccounts(long customerId) {
