@@ -39,7 +39,7 @@ public class AccountController {
 
 	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAccounts() {
-		List<Account> allAccounts=(List<Account>)accountRepository.findAll();
+		List<Account> allAccounts = (List<Account>) accountRepository.findAll();
 		return new ResponseEntity<List>(allAccounts, HttpStatus.OK);
 
 	}
@@ -50,101 +50,91 @@ public class AccountController {
 		return new ResponseEntity<Account>(account, HttpStatus.OK);
 
 	}
-//how to go from customer to account
-//	@RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
-//	public ResponseEntity<?> getAllAccounts(@PathVariable long id) {
-//		ArrayList<Account> allAccounts=new ArrayList<Account>(customerRepository.findOne(id).getAccounts();
-//)
-//		return new ResponseEntity<Account>(allAccounts, HttpStatus.OK);
-//
-//	}
-//	@RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
-//	public ResponseEntity<?> createAccount(@PathVariable Account account) {
-//		Account newAccount=accountRepository.save(account);
-//		return new ResponseEntity<Account>(newAccount, HttpStatus.CREATED);
-//
-//	}
-	
+
+
 	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable long accountId) {
-		ResponseEntity response=null;
-		//do they need to enter account?
-		if (!accountRepository.exists(accountId)){
-			response=new ResponseEntity<Account>(HttpStatus.CREATED);
+		ResponseEntity response = null;
+		// do they need to enter account?
+		if (!accountRepository.exists(accountId)) {
+			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
+		} else {
+			response = new ResponseEntity<>(HttpStatus.OK);
+			Account accountNew = accountRepository.findOne(accountId);
+
+			accountNew.setNickname(account.getNickname());
+			accountNew.setRewards(account.getRewards());
+			accountNew.setCustomer(account.getCustomer());
+			accountRepository.save(accountNew);
 		}
-		else{
-			response=new ResponseEntity<Account>(HttpStatus.OK);
-		}
-		accountRepository.save(account);
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		return new ResponseEntity<Account>(account, HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteAccount(@PathVariable long accountId) {
-		Account account=accountRepository.findOne(accountId);
+		Account account = accountRepository.findOne(accountId);
 		accountRepository.delete(accountId);
 		return new ResponseEntity<Account>(account, HttpStatus.OK);
 
-	}	
-	
-    @RequestMapping(value = "/accounts/{accountId}/customer", method = RequestMethod.GET)
-    public ResponseEntity<?> getCustomerByAccount(@PathVariable long accountId){
-        Account a = accountRepository.findOne(accountId);
-        Customer c = a.getCustomer();
-        return new ResponseEntity<>(c, HttpStatus.OK);
-    }
-    
+	}
+
+	@RequestMapping(value = "/accounts/{accountId}/customer", method = RequestMethod.GET)
+	public ResponseEntity<?> getCustomerByAccount(@PathVariable long accountId) {
+		Account a = accountRepository.findOne(accountId);
+		Customer c = a.getCustomer();
+		return new ResponseEntity<>(c, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllBillsByAccount(@PathVariable long accountId){
-		List<Bill> billList= (List<Bill>)billRepository.findAll();
+	public ResponseEntity<?> getAllBillsByAccount(@PathVariable long accountId) {
+		List<Bill> billList = (List<Bill>) billRepository.findAll();
 		return new ResponseEntity<>(billList, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.POST)
-	public ResponseEntity<?> createBill(@RequestBody Bill bill, @PathVariable long accountId){
-		if (!accountRepository.exists(accountId)){
+	public ResponseEntity<?> createBill(@RequestBody Bill bill, @PathVariable long accountId) {
+		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
-		}else{
+		} else {
 			bill.setAccount_id(accountId);
 			billRepository.save(bill);
 		}
 		return new ResponseEntity<>(bill, HttpStatus.ACCEPTED);
 	}
-	
+
 	@RequestMapping(value = "/accounts/{accountId}/deposits", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllDepositsByAccount(@PathVariable long accountId){
+	public ResponseEntity<?> getAllDepositsByAccount(@PathVariable long accountId) {
 		List<Deposit> depositList = (List<Deposit>) depositRepository.findAll();
 		return new ResponseEntity<>(depositList, HttpStatus.OK);
-		
+
 	}
-	
+
 	@RequestMapping(value = "/accounts/{accountId}/deposits", method = RequestMethod.POST)
-	public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable long accountId){
-		if (!accountRepository.exists(accountId)){
+	public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable long accountId) {
+		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
-		}else{
+		} else {
 			depositRepository.save(deposit);
 		}
 		return new ResponseEntity<>(deposit, HttpStatus.ACCEPTED);
 	}
 
 	@RequestMapping(value = "/accounts/{accountId}/withdrawals", method = RequestMethod.GET)
-	public ResponseEntity<?> getAllWithdrawalsByAccount(@PathVariable long accountId){
+	public ResponseEntity<?> getAllWithdrawalsByAccount(@PathVariable long accountId) {
 		List<Withdrawal> withdrawalList = (List<Withdrawal>) withdrawalRepository.findAll();
 		return new ResponseEntity<>(withdrawalList, HttpStatus.OK);
-		
+
 	}
-	
+
 	@RequestMapping(value = "/accounts/{accountId}/withdrawals", method = RequestMethod.POST)
-	public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long accountId){
-		if (!accountRepository.exists(accountId)){
+	public ResponseEntity<?> createWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long accountId) {
+		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
-		}else{
+		} else {
 			withdrawalRepository.save(withdrawal);
 		}
 		return new ResponseEntity<>(withdrawal, HttpStatus.ACCEPTED);
 	}
 
-	
 }
