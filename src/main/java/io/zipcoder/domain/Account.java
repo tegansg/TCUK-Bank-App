@@ -8,11 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
+
 
 @Entity
 public class Account {
@@ -66,6 +63,26 @@ public class Account {
 
 	public double getBalance() {
 		return balance;
+	}
+	
+	public Double increaseBalance(double amount){
+		
+		if(amount >= 0){
+			Double newBalance = getBalance() + amount;
+			return newBalance;
+		}
+		return null;
+		
+	}
+	
+	public Double decreaseBalance(double amount){
+		
+		if(amount >= 0){
+			Double newBalance = getBalance() - amount;
+			return newBalance;
+		}
+		return null;
+		
 	}
 
 	public Customer getCustomer() {
