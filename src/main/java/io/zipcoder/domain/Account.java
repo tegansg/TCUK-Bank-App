@@ -53,6 +53,10 @@ public class Account {
 		this.nickname = nickname + "'s" + this.getType() + "account";
 	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public int getRewards() {
 		return rewards;
 	}

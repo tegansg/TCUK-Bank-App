@@ -41,7 +41,6 @@ public class AccountController {
 	public ResponseEntity<?> getAllAccounts() {
 		List<Account> allAccounts = (List<Account>) accountRepository.findAll();
 		return new ResponseEntity<List>(allAccounts, HttpStatus.OK);
-
 	}
 
 	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.GET)
@@ -51,24 +50,16 @@ public class AccountController {
 
 	}
 
-
 	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable long accountId) {
-		ResponseEntity response = null;
-		// do they need to enter account?
 		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
 		} else {
-			response = new ResponseEntity<>(HttpStatus.OK);
-			Account accountNew = accountRepository.findOne(accountId);
-
-			accountNew.setNickname(account.getNickname());
-			accountNew.setRewards(account.getRewards());
-			accountNew.setCustomer(account.getCustomer());
-			accountRepository.save(accountNew);
+			account.setId(accountId);
+			accountRepository.save(account);
+			return new ResponseEntity<Account>(account, HttpStatus.OK);
 		}
-		return new ResponseEntity<Account>(account, HttpStatus.OK);
-
+		
 	}
 
 	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.DELETE)
@@ -107,7 +98,7 @@ public class AccountController {
 	public ResponseEntity<?> getAllDepositsByAccount(@PathVariable long accountId) {
 		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
-		} 
+		}
 		Iterable<Deposit> accountDeposits = depositRepository.getDepositsByAccount();
 		return new ResponseEntity<>(accountDeposits, HttpStatus.OK);
 
@@ -117,23 +108,21 @@ public class AccountController {
 	public ResponseEntity<?> createDeposit(@RequestBody Deposit deposit, @PathVariable long accountId) {
 		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
-		} 
-		else {
+		} else {
 			deposit.setPayee_id(accountId);
 			depositRepository.save(deposit);
 			return new ResponseEntity<>(deposit, HttpStatus.ACCEPTED);
 		}
-		
+
 	}
 
 	@RequestMapping(value = "/accounts/{accountId}/withdrawals", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllWithdrawalsByAccount(@PathVariable long accountId) {
 		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
-		} 
+		}
 		Iterable<Withdrawal> accountWithdrawals = withdrawalRepository.getWithdrawalsByAccount();
 		return new ResponseEntity<>(accountWithdrawals, HttpStatus.OK);
-
 	}
 
 	@RequestMapping(value = "/accounts/{accountId}/withdrawals", method = RequestMethod.POST)
@@ -145,7 +134,7 @@ public class AccountController {
 			withdrawalRepository.save(withdrawal);
 			return new ResponseEntity<>(withdrawal, HttpStatus.ACCEPTED);
 		}
-		
+
 	}
 
 }
