@@ -1,7 +1,5 @@
 package io.zipcoder.controller;
 
-// TODO below
-
 import io.zipcoder.domain.Account;
 import io.zipcoder.domain.Bill;
 import io.zipcoder.domain.Customer;
@@ -17,7 +15,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.inject.Inject;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -41,32 +41,39 @@ public class CustomerController {
         Customer c = customerRepository.findOne(id);
         return new ResponseEntity<>(c, HttpStatus.OK);
     }
-// commented out and moved to AccountController
-//    @RequestMapping(value = "/accounts/{accountId}/customer", method = RequestMethod.GET)
-//    public ResponseEntity<?> getCustomerByAccount(@PathVariable long accountId){
-//        Account a = accountRepository.findOne(accountId);
-//        // Customer c = a.getCustomer;
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
 
-////TODO fill this in
+
 //    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
 //	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId){
-//        //Find accounts by customers then find bills by account
-//        Customer c = customerRepository.findOne(customerId);
-//        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
-//        Iterable<Bill> bills =
 //
+//        // for each account in the list of accounts we want to find the associated accountId
+//        // then we can find the bills associated with that account and therefore, that customer
+//
+//        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
+//        Iterator<Account> iterator = accounts.iterator();
+//
+//        while (iterator.hasNext()){
+//            Account account = iterator.next();
+//            long accountId = account.getId();
+//
+//        }
 //
 //		return new ResponseEntity<>(bills, HttpStatus.OK);
 //	}
-//
-//    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
-//	public ResponseEntity<?> getAllAccounts(long customerId) {
-//
-//
-//        return new ResponseEntity<>(accounts, HttpStatus.OK);
-//    }
+
+    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
+    public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId){
+
+        Iterable<Bill> bills = billRepository.findBillsByAccount(customerId);
+        return new ResponseEntity<>(bills, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllAccounts(long customerId) {
+
+        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
 	public ResponseEntity<?> createAccount(@PathVariable long customerId, @RequestBody Account account) {
@@ -75,7 +82,6 @@ public class CustomerController {
         account.setCustomer(c);
         accountRepository.save(account);
 		return new ResponseEntity<>(account, HttpStatus.CREATED);
-
 	}
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
