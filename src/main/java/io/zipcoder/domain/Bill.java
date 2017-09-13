@@ -1,5 +1,7 @@
 package io.zipcoder.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,9 @@ public class Bill {
 	
 	@Column(name = "STATUS")
 	String status;
-	
+	public enum status implements Serializable{
+		PENDING, CANCELLED, COMPLETED, RECURRING
+	}
 	@Column(name = "PAYEE")
 	String payee;
 	
@@ -51,8 +55,8 @@ public class Bill {
 		return status;
 	}
 	
-	public void setStatus(Status status) {
-		this.status = status.toString();
+	public void setStatus() {
+		this.status = status;
 	}
 	
 	public String getPayee() {
