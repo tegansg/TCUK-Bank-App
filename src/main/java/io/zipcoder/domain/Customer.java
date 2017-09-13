@@ -56,4 +56,8 @@ public class Customer {
         return address;
     }
 
+    public void setAddress(Set<Address> address){
+        this.address = address;
+    }
+
 }
