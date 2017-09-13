@@ -14,16 +14,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.inject.Inject;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.Set;
 
 @RestController
 public class CustomerController {
-
+    @Inject
     private CustomerRepository customerRepository;
+    @Inject
     private AccountRepository accountRepository;
+    @Inject
     private BillRepository billRepository;
+
     private Set<Customer> customerList;
 
     @Autowired
