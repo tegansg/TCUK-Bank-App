@@ -1,5 +1,7 @@
 package io.zipcoder.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,9 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Deposit {
+public class Deposit  {
 	
-	public enum Type {
+	public enum Type implements Serializable{
 		P2P, DEPOSIT, WITHDRAWAL
 	}
 	
@@ -29,9 +31,17 @@ public class Deposit {
 	private String type;
 	
 
-	@Column(name = "DEPOSIT_PAYEE_ID")
+	@Column(name = "DEPOSIT_PAYEE_ID") 
 	private long payee_id;
 	
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setTransaction_date(String transaction_date) {
+		this.transaction_date = transaction_date;
+	}
+
 	public enum Medium {
 		BALANCE, REWARDS
 	}
