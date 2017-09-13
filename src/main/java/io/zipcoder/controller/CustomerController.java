@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Set;
 
 @RestController
@@ -38,6 +39,24 @@ public class CustomerController {
 //        // Customer c = a.getCustomer;
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
+
+//    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
+//	public ResponseEntity<?> getAllAccounts(long customerId) {
+//        Customer c = customerRepository.findOne(customerId);
+//        //Iterable<Customer> allAccountsForCustomer = c.getAccounts();
+//
+//        return new ResponseEntity<>(allAccountsForCustomer, HttpStatus.OK);
+//    }
+
+    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
+	public ResponseEntity<?> createAccount(@PathVariable long customerId, @PathVariable Account account) {
+
+        Customer c = customerRepository.findOne(customerId);
+        account = accountRepository.save(account);
+        account.setCustomer(c);
+		return new ResponseEntity<>(account, HttpStatus.CREATED);
+
+	}
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Customer>> getAllCustomers(){

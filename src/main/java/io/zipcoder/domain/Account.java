@@ -69,7 +69,10 @@ public class Account {
 		return customer;
 	}
 
-	public long getId() {
+	public void setCustomer(Customer customer){
+		this.customer = customer;
+
+	}	public long getId() {
 		return id;
 	}
 
