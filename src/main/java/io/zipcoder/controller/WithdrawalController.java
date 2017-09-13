@@ -40,16 +40,20 @@ public class WithdrawalController {
 	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long withdrawalId) { //get original withdraw and update. also update account
 		ResponseEntity<?> response=null;
-		
 		if (!withdrawalRepository.exists(withdrawalId)){
 			response=new ResponseEntity<>("Wtihdrawal Id does not exist", HttpStatus.NOT_FOUND);
 		}
 		else{
-			withdrawal.setId(withdrawalId);
-			withdrawalRepository.save(withdrawal);
+			
+			withdrawal.setPayer_id(withdrawalRepository.findOne(withdrawalId).getPayer_id()); 
 			Account account = accountRepository.findOne(withdrawal.getPayer_id());
-			account.decreaseBalance(withdrawal.getAmount());
-			response=new ResponseEntity<>("Accepted withdrawal", HttpStatus.ACCEPTED);
+
+			if(account.decreaseBalance(withdrawal.getAmount())){
+				response=new ResponseEntity<>("Accepted withdrawal", HttpStatus.ACCEPTED);
+			} else {
+				response=new ResponseEntity<>("not enough money", HttpStatus.BAD_REQUEST);
+			}
+			
 		}
 		
 		return response;
@@ -63,10 +67,15 @@ public class WithdrawalController {
 			response = new ResponseEntity<>("Id does not exist", HttpStatus.NOT_FOUND);
 		} else {
 			
+			withdrawal.setPayer_id(withdrawalRepository.findOne(withdrawalId).getPayer_id()); 
 			Account account = accountRepository.findOne(withdrawal.getPayer_id());
-			account.increaseBalance(withdrawal.getAmount());
-			withdrawalRepository.delete(withdrawalId);
-			response = new ResponseEntity<>("Id has been deleted, balance updated", HttpStatus.NO_CONTENT);
+			if(account.increaseBalance(withdrawal.getAmount())){
+				withdrawalRepository.delete(withdrawalId);
+				response = new ResponseEntity<>("Id has been deleted, balance updated", HttpStatus.NO_CONTENT);
+			} else {
+				response = new ResponseEntity<> ("not enough money", HttpStatus.BAD_REQUEST);
+			}
+			
 		}
 		return response;
 	}	

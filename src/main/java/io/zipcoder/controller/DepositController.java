@@ -37,29 +37,41 @@ public class DepositController {
     
     @RequestMapping(value = "/deposit/{depositId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateDeposit(@RequestBody Deposit deposit, @PathVariable long depositId){
+    	ResponseEntity<?> response = null;
     	if(!depositRepository.exists(depositId)){
     		return new ResponseEntity<>("Deposit does not exist", HttpStatus.NOT_FOUND);
     	} else {
-    		deposit.setId(depositId);
-    		depositRepository.save(deposit);
+    		
+    		deposit.setPayee_id(depositRepository.findOne(depositId).getPayee_id()); 
 			Account account = accountRepository.findOne(deposit.getPayee_id());
-			account.increaseBalance(deposit.getAmount());
-    		return new ResponseEntity<>("Deposit successful, account updated", HttpStatus.OK);
+			if(account.increaseBalance(deposit.getAmount())){
+				response = new ResponseEntity<>("Deposit successful, account updated", HttpStatus.OK);
+			} else {
+				response = new ResponseEntity<>("Deposit unsuccessful, account updated", HttpStatus.BAD_REQUEST);
+			}
+    		
     	}
+    	return response;
     }
     
     @RequestMapping(value = "/deposit/{depositId}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteDeposit(@RequestBody Deposit deposit, @PathVariable long depositId) {
+    	ResponseEntity<?> response = null;
     	if(!depositRepository.exists(depositId)) {
-    		return new ResponseEntity<>("Deposit does not exist", HttpStatus.NOT_FOUND);
+    		response =  new ResponseEntity<>("Deposit does not exist", HttpStatus.NOT_FOUND);
     	} else {
     		
+    		deposit.setPayee_id(depositRepository.findOne(depositId).getPayee_id());
 			Account account = accountRepository.findOne(deposit.getPayee_id());
-			account.decreaseBalance(deposit.getAmount());
-    		depositRepository.delete(depositId);
-    		return new ResponseEntity<>(HttpStatus.OK);
+			if(account.decreaseBalance(deposit.getAmount())){
+				depositRepository.delete(depositId);
+	    		response = new ResponseEntity<>("Id deleted, account updated", HttpStatus.NO_CONTENT);
+			} else {
+				response = new ResponseEntity<>("not enough money", HttpStatus.BAD_REQUEST);
+			}
+    		
     	}
-    
+    	return response;
     }
 
     

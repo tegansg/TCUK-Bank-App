@@ -1,5 +1,7 @@
 package io.zipcoder.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,18 +16,27 @@ public class Withdrawal {
 
 	@Column(name = "TRANSACTION_TYPE")
 	private String type;
+	public enum Type implements Serializable{
+		P2P, DEPOSIT, WITHDRAWAL
+	}
 
 	@Column(name = "TRANSACTION_DATE")
 	private String transaction_date;
 
 	@Column(name = "WITHDRAWAL_STATUS")
 	private String status;
+	public enum status implements Serializable{
+		PENDNING, CANCELLED, COMPLETED
+	}
 
 	@Column(name = "PAYER_ID") 
 	private long payer_id;
 
 	@Column(name = "WITHDRAWAL_TYPE")
 	private String medium;
+	public enum Medium implements Serializable{
+		BALANCE, REWARDS
+	}
 
 	@Column(name = "WITHDRAWAL_AMOUNT")
 	private double amount;

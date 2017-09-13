@@ -69,24 +69,26 @@ public class Account {
 		return balance;
 	}
 	
-	public Double increaseBalance(double amount){
+	public boolean increaseBalance(double amount){
 		
-		if(amount >= 0){
+		if(amount >= 0.0){
 			Double newBalance = getBalance() + amount;
-			return newBalance;
+			this.balance = newBalance;
+			return true;
 		}
-		return null;
-		
+		return false;
+
 	}
 	
-	public Double decreaseBalance(double amount){
+	public boolean decreaseBalance(double amount){
 		
-		if(amount >= 0){
+		if(amount >= 0.0){
 			Double newBalance = getBalance() - amount;
-			return newBalance;
+			this.balance = newBalance;
+			return true;
 		}
-		return null;
-		
+		return false;
+
 	}
 
 	public Customer getCustomer() {
