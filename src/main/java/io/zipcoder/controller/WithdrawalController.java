@@ -71,7 +71,7 @@ public class WithdrawalController {
 			Account account = accountRepository.findOne(withdrawal.getPayer_id());
 			if(account.increaseBalance(withdrawal.getAmount())){
 				withdrawalRepository.delete(withdrawalId);
-				response = new ResponseEntity<>("Id has been deleted, balance updated", HttpStatus.NO_CONTENT);
+				response = new ResponseEntity<>("Id has been deleted and balance updated", HttpStatus.NO_CONTENT);
 			} else {
 				response = new ResponseEntity<> ("not enough money", HttpStatus.BAD_REQUEST);
 			}
