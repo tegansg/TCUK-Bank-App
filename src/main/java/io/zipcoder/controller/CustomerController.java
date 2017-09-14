@@ -45,8 +45,19 @@ public class CustomerController {
 
     @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
     public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId){
-
-        Iterable<Bill> bills = billRepository.findBillsByAccount(customerId);
+    	ArrayList<Long> accountIds = new ArrayList<>();
+    	ArrayList<Bill> bills = new ArrayList<>();
+    	
+    	Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
+    	
+    	for(Account account : accounts){
+    		accountIds.add(account.getId());
+    	}
+    	
+    	for(int i=0; i< accountIds.size(); i++){
+    		bills.addAll((List<Bill>) billRepository.findBillsByAccount(accountIds.get(i)));
+    	}
+        //Iterable<Bill> bills = billRepository.findBillsByAccount(customerId);
         return new ResponseEntity<>(bills, HttpStatus.OK);
     }
 
