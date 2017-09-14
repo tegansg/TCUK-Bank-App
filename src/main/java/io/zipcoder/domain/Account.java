@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 
+
 @Entity
 public class Account {
 	// when serialized should print out as a string
