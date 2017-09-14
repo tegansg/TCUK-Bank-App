@@ -82,7 +82,7 @@ public class Deposit  {
 	}
 
 	public void setStatus() {
-		this.status = status;
+		this.status= status;
 	}
 	
 	public long getId() {

@@ -19,7 +19,6 @@ import io.zipcoder.domain.Deposit;
 import io.zipcoder.domain.Withdrawal;
 import io.zipcoder.repositories.AccountRepository;
 import io.zipcoder.repositories.BillRepository;
-import io.zipcoder.repositories.CustomerRepository;
 import io.zipcoder.repositories.DepositRepository;
 import io.zipcoder.repositories.WithdrawalRepository;
 
@@ -28,8 +27,6 @@ public class AccountController {
 
 	@Inject
 	private AccountRepository accountRepository;
-	@Inject
-	private CustomerRepository customerRepository;
 	@Inject
 	private BillRepository billRepository;
 	@Inject
@@ -40,7 +37,7 @@ public class AccountController {
 	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAccounts() {
 		List<Account> allAccounts = (List<Account>) accountRepository.findAll();
-		return new ResponseEntity<List>(allAccounts, HttpStatus.OK);
+		return new ResponseEntity<>(allAccounts, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.GET)
@@ -96,10 +93,11 @@ public class AccountController {
 
 	@RequestMapping(value = "/accounts/{accountId}/deposits", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllDepositsByAccount(@PathVariable long accountId) {
+		
 		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
 		}
-		Iterable<Deposit> accountDeposits = depositRepository.getDepositsByAccount();
+		Iterable<Deposit> accountDeposits = depositRepository.getDepositsByAccount(accountId);
 		return new ResponseEntity<>(accountDeposits, HttpStatus.OK);
 
 	}
@@ -121,7 +119,7 @@ public class AccountController {
 		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
 		}
-		Iterable<Withdrawal> accountWithdrawals = withdrawalRepository.getWithdrawalsByAccount();
+		Iterable<Withdrawal> accountWithdrawals = withdrawalRepository.getWithdrawalsByAccount(accountId);
 		return new ResponseEntity<>(accountWithdrawals, HttpStatus.OK);
 	}
 

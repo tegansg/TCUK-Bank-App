@@ -9,9 +9,9 @@ public interface DepositRepository extends CrudRepository<Deposit, Long>{
 
 	   String query = "SELECT d.* " +
 				"FROM Deposit d " +
-				"WHERE d.ACCOUNT_ID = ?1";
+				"WHERE d.DEPOSIT_PAYEE_ID = ?1" ;
 
 	   @Query(value = query, nativeQuery = true)
-	   public Iterable<Deposit> getDepositsByAccount();
+	   public Iterable<Deposit> getDepositsByAccount(long accountId);
 
 }
