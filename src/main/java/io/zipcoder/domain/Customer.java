@@ -16,48 +16,48 @@ import java.util.Set;
 
 public class Customer {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "CUSTOMER_ID")
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "CUSTOMER_ID")
+	private long id;
 
-    @Column(name = "FIRST_NAME")
-    private String first_name;
-    
-    @Column(name = "LAST_NAME")
-    private String last_name;
-    
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CUSTOMER_ID")
-    @OrderBy
-    private Set<Address> address;
+	@Column(name = "FIRST_NAME")
+	private String first_name;
 
-    public long getId() {
-        return id;
-    }
+	@Column(name = "LAST_NAME")
+	private String last_name;
 
-    public String getFirst_name() {
-        return first_name;
-    }
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "CUSTOMER_ID")
+	@OrderBy
+	private Set<Address> address;
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public String getLast_name() {
-        return last_name;
-    }
+	public String getFirst_name() {
+		return first_name;
+	}
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
+	}
 
-    public Set<Address> getAddress() {
-        return address;
-    }
+	public String getLast_name() {
+		return last_name;
+	}
 
-    public void setAddress(Set<Address> address){
-        this.address = address;
-    }
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
+	}
+
+	public Set<Address> getAddress() {
+		return address;
+	}
+
+	public void setAddress(Set<Address> address) {
+		this.address = address;
+	}
 
 }

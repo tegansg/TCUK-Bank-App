@@ -56,7 +56,7 @@ public class AccountController {
 			accountRepository.save(account);
 			return new ResponseEntity<Account>(account, HttpStatus.OK);
 		}
-		
+
 	}
 
 	@RequestMapping(value = "/accounts/{accountId}", method = RequestMethod.DELETE)
@@ -77,15 +77,15 @@ public class AccountController {
 	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllBillsByAccount(@PathVariable long accountId) {
 		ResponseEntity<?> response = null;
-		
-		if(!accountRepository.exists(accountId)) {
+
+		if (!accountRepository.exists(accountId)) {
 			response = new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
 		} else {
 			Iterable<Bill> billList = billRepository.findBillsByAccount(accountId);
 			response = new ResponseEntity<>(billList, HttpStatus.OK);
 		}
 		return response;
-		
+
 	}
 
 	@RequestMapping(value = "/accounts/{accountId}/bills", method = RequestMethod.POST)
@@ -101,7 +101,7 @@ public class AccountController {
 
 	@RequestMapping(value = "/accounts/{accountId}/deposits", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllDepositsByAccount(@PathVariable long accountId) {
-		
+
 		if (!accountRepository.exists(accountId)) {
 			return new ResponseEntity<String>("Account does not exist", HttpStatus.NOT_FOUND);
 		}

@@ -17,17 +17,17 @@ import io.zipcoder.repositories.WithdrawalRepository;
 
 @RestController
 public class WithdrawalController {
-	
+
 	@Inject
 	private WithdrawalRepository withdrawalRepository;
-	
+
 	@Inject
 	private AccountRepository accountRepository;
-	
+
 	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.GET)
 	public ResponseEntity<?> getWithdrawal(@PathVariable long withdrawalId) {
 		ResponseEntity<?> response = null;
-		if(!withdrawalRepository.exists(withdrawalId)){
+		if (!withdrawalRepository.exists(withdrawalId)) {
 			response = new ResponseEntity<>("Error fetching ID", HttpStatus.NOT_FOUND);
 		} else {
 			Withdrawal withdrawal = withdrawalRepository.findOne(withdrawalId);
@@ -36,48 +36,60 @@ public class WithdrawalController {
 		return response;
 
 	}
-	
+
 	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long withdrawalId) { //get original withdraw and update. also update account
-		ResponseEntity<?> response=null;
-		if (!withdrawalRepository.exists(withdrawalId)){
-			response=new ResponseEntity<>("Wtihdrawal Id does not exist", HttpStatus.NOT_FOUND);
-		}
-		else{
-			
-			withdrawal.setPayer_id(withdrawalRepository.findOne(withdrawalId).getPayer_id()); 
+	public ResponseEntity<?> updateWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long withdrawalId) { // get
+																														// original
+																														// withdraw
+																														// and
+																														// update.
+																														// also
+																														// update
+																														// account
+		ResponseEntity<?> response = null;
+		if (!withdrawalRepository.exists(withdrawalId)) {
+			response = new ResponseEntity<>("Wtihdrawal Id does not exist", HttpStatus.NOT_FOUND);
+		} else {
+
+			withdrawal.setPayer_id(withdrawalRepository.findOne(withdrawalId).getPayer_id());
 			Account account = accountRepository.findOne(withdrawal.getPayer_id());
 
-			if(account.decreaseBalance(withdrawal.getAmount())){
-				response=new ResponseEntity<>("Accepted withdrawal", HttpStatus.ACCEPTED);
+			if (account.decreaseBalance(withdrawal.getAmount())) {
+				response = new ResponseEntity<>("Accepted withdrawal", HttpStatus.ACCEPTED);
 			} else {
-				response=new ResponseEntity<>("not enough money", HttpStatus.BAD_REQUEST);
+				response = new ResponseEntity<>("not enough money", HttpStatus.BAD_REQUEST);
 			}
-			
+
 		}
-		
+
 		return response;
 	}
 
-	
-	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.DELETE) //reverse whats happened in account and THEN delete
+	@RequestMapping(value = "/withdrawals/{withdrawalId}", method = RequestMethod.DELETE) // reverse
+																							// whats
+																							// happened
+																							// in
+																							// account
+																							// and
+																							// THEN
+																							// delete
 	public ResponseEntity<?> deleteWithdrawal(@RequestBody Withdrawal withdrawal, @PathVariable long withdrawalId) {
-		ResponseEntity<?> response=null;
-		if(!withdrawalRepository.exists(withdrawalId)){
+		ResponseEntity<?> response = null;
+		if (!withdrawalRepository.exists(withdrawalId)) {
 			response = new ResponseEntity<>("Id does not exist", HttpStatus.NOT_FOUND);
 		} else {
-			
-			withdrawal.setPayer_id(withdrawalRepository.findOne(withdrawalId).getPayer_id()); 
+
+			withdrawal.setPayer_id(withdrawalRepository.findOne(withdrawalId).getPayer_id());
 			Account account = accountRepository.findOne(withdrawal.getPayer_id());
-			if(account.increaseBalance(withdrawal.getAmount())){
+			if (account.increaseBalance(withdrawal.getAmount())) {
 				withdrawalRepository.delete(withdrawalId);
 				response = new ResponseEntity<>("Id has been deleted and balance updated", HttpStatus.NO_CONTENT);
 			} else {
-				response = new ResponseEntity<> ("not enough money", HttpStatus.BAD_REQUEST);
+				response = new ResponseEntity<>("not enough money", HttpStatus.BAD_REQUEST);
 			}
-			
+
 		}
 		return response;
-	}	
+	}
 
 }

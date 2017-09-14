@@ -1,7 +1,10 @@
 package io.zipcoder.exceptions;
 
 import org.springframework.http.HttpStatus;
+
 import org.springframework.web.bind.annotation.ResponseStatus;
+//14/09/2017 Currently not in use
+//implemented if had time
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class ResourceNotFoundException extends RuntimeException{
@@ -20,11 +23,5 @@ public class ResourceNotFoundException extends RuntimeException{
 		super(message);
 		
 	}
-	
-//	public void verifyBill(Long bill_id) {
-//		//if doesn't exist throws exception
-//		if(!billRepository.exists(bill_id)){
-//			throw new ResourceNotFoundException();
-//		}
 
 }

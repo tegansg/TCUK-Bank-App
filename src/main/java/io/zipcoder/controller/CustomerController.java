@@ -16,122 +16,97 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.inject.Inject;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 public class CustomerController {
 
-    @Inject
-    private CustomerRepository customerRepository;
-    @Inject
-    private AccountRepository accountRepository;
-    @Inject
-    private BillRepository billRepository;
+	@Inject
+	private CustomerRepository customerRepository;
+	@Inject
+	private AccountRepository accountRepository;
+	@Inject
+	private BillRepository billRepository;
 
-    private Set<Customer> customerList;
+	@Autowired
+	public CustomerController(CustomerRepository customerRepository) {
+		this.customerRepository = customerRepository;
+	}
 
-    @Autowired
-    public CustomerController(CustomerRepository customerRepository){
-        this.customerRepository = customerRepository;
-    }
+	@RequestMapping(value = "/customers/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> getCustomer(@PathVariable long id) {
+		Customer c = customerRepository.findOne(id);
+		return new ResponseEntity<>(c, HttpStatus.OK);
+	}
 
-    @RequestMapping(value = "/customers/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCustomer(@PathVariable long id){
-        Customer c = customerRepository.findOne(id);
-        return new ResponseEntity<>(c, HttpStatus.OK);
-    }
+	@RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId) {
+		ArrayList<Long> accountIds = new ArrayList<>();
+		ArrayList<Bill> bills = new ArrayList<>();
 
-    @RequestMapping(value = "/customers/{customerId}/bills", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllBillsbyCustomer(@PathVariable Long customerId){
-    	ArrayList<Long> accountIds = new ArrayList<>();
-    	ArrayList<Bill> bills = new ArrayList<>();
-    	
-    	Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
-    	
-    	for(Account account : accounts){
-    		accountIds.add(account.getId());
-    	}
-    	
-    	for(int i=0; i< accountIds.size(); i++){
-    		bills.addAll((List<Bill>) billRepository.findBillsByAccount(accountIds.get(i)));
-    	}
-        //Iterable<Bill> bills = billRepository.findBillsByAccount(customerId);
-        return new ResponseEntity<>(bills, HttpStatus.OK);
-    }
+		Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
 
-    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
+		for (Account account : accounts) {
+			accountIds.add(account.getId());
+		}
+
+		for (int i = 0; i < accountIds.size(); i++) {
+			bills.addAll((List<Bill>) billRepository.findBillsByAccount(accountIds.get(i)));
+		}
+		return new ResponseEntity<>(bills, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllAccounts(long customerId) {
 
-        Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
-    }
+		Iterable<Account> accounts = accountRepository.findAccountsByCustomer(customerId);
+		return new ResponseEntity<>(accounts, HttpStatus.OK);
+	}
 
-    @RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
+	@RequestMapping(value = "/customers/{customerId}/accounts", method = RequestMethod.POST)
 	public ResponseEntity<?> createAccount(@PathVariable long customerId, @RequestBody Account account) {
 
-        Customer c = customerRepository.findOne(customerId);
-        account.setCustomer(c);
-        accountRepository.save(account);
+		Customer c = customerRepository.findOne(customerId);
+		account.setCustomer(c);
+		accountRepository.save(account);
 		return new ResponseEntity<>(account, HttpStatus.CREATED);
 	}
 
-    @RequestMapping(value = "/customers", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Customer>> getAllCustomers(){
-        Iterable<Customer> allCustomers = customerRepository.findAll();
-        return new ResponseEntity<>(allCustomers, HttpStatus.OK);
-    }
+	@RequestMapping(value = "/customers", method = RequestMethod.GET)
+	public ResponseEntity<Iterable<Customer>> getAllCustomers() {
+		Iterable<Customer> allCustomers = customerRepository.findAll();
+		return new ResponseEntity<>(allCustomers, HttpStatus.OK);
+	}
 
-    @RequestMapping(value = "/customers", method = RequestMethod.POST)
-    public ResponseEntity<?> createCustomer(@RequestBody Customer customer){
+	@RequestMapping(value = "/customers", method = RequestMethod.POST)
+	public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
 
-        customerRepository.save(customer);
+		customerRepository.save(customer);
 
-        URI newCustomerUri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/customers/{id}") //?
-                .buildAndExpand(customer.getId())
-                .toUri();
+		URI newCustomerUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/customers/{id}")
+				.buildAndExpand(customer.getId()).toUri();
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(newCustomerUri);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setLocation(newCustomerUri);
 
-        return new ResponseEntity<>(newCustomerUri, HttpStatus.CREATED);
-    }
+		return new ResponseEntity<>(newCustomerUri, HttpStatus.CREATED);
+	}
 
-//    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
-//    public ResponseEntity updateCustomer(@RequestBody Customer customer, @PathVariable long id){
-//
-//        if(customerRepository.exists(id)){
-//            Customer c = customerRepository.findOne(id);
-//            c.setFirst_name(customer.getFirst_name());
-//            c.setLast_name(customer.getLast_name());
-//            c.setAddress(customer.getAddress());
-//            customerRepository.save(c);
-//            return new ResponseEntity<>(c, HttpStatus.OK);
-//        } else {
-//            customerRepository.save(customer);
-//            return new ResponseEntity<>(customer, HttpStatus.CREATED);
-//        }
-//    }
+	@RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateCustomer(@RequestBody Customer customer, @PathVariable long id) {
 
-    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateCustomer(@RequestBody Customer customer, @PathVariable long id) {
+		if (!customerRepository.exists(id)) {
+			return new ResponseEntity<>("Customer does not exist", HttpStatus.NOT_FOUND);
+		} else {
+			Customer c = customerRepository.findOne(id);
 
-        if (!customerRepository.exists(id)) {
-            return new ResponseEntity<>("Customer does not exist", HttpStatus.NOT_FOUND);
-        } else {
-            Customer c = customerRepository.findOne(id);
+			c.setFirst_name(customer.getFirst_name());
+			c.setLast_name(customer.getLast_name());
+			c.setAddress(customer.getAddress());
+			customer = c;
+			customerRepository.save(c);
+		}
+		return new ResponseEntity<>(customer, HttpStatus.OK);
 
-            c.setFirst_name(customer.getFirst_name());
-            c.setLast_name(customer.getLast_name());
-            c.setAddress(customer.getAddress());
-            customer = c;
-
-            customerRepository.save(c);
-        }
-        return new ResponseEntity<>(customer, HttpStatus.OK);
-
-    }
+	}
 }

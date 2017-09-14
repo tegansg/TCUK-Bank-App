@@ -20,12 +20,13 @@ import io.zipcoder.error.ValidationError;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-	
+
 	@Autowired
 	private MessageSource messageSource;
-	
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException rnfe, HttpServletRequest request){
+
+	@ExceptionHandler(InvalidDateFormatException.class)
+	public ResponseEntity<?> handleInvalidDateFormatException(InvalidDateFormatException rnfe,
+			HttpServletRequest request) {
 		ErrorDetail errordetail = new ErrorDetail();
 		errordetail.setTitle("Resource not found");
 		errordetail.setStatus(404);
@@ -33,18 +34,17 @@ public class RestExceptionHandler {
 		errordetail.setDeveloperMessage(rnfe.getMessage());
 		errordetail.setTimeStamp(new Date().getTime());
 		return new ResponseEntity<>(errordetail, HttpStatus.NOT_FOUND);
-		}
-	
+	}
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<?> handleValidationError(MethodArgumentNotValidException manve, HttpServletRequest request){
+	public ResponseEntity<?> handleValidationError(MethodArgumentNotValidException manve, HttpServletRequest request) {
 		ErrorDetail errorDetail = new ErrorDetail();
 
-		
-		List<FieldError> fieldErrors =  manve.getBindingResult().getFieldErrors();
-		for(FieldError fe : fieldErrors) {
+		List<FieldError> fieldErrors = manve.getBindingResult().getFieldErrors();
+		for (FieldError fe : fieldErrors) {
 
 			List<ValidationError> validationErrorList = errorDetail.getErrors().get(fe.getField());
-			if(validationErrorList == null) {
+			if (validationErrorList == null) {
 				validationErrorList = new ArrayList<>();
 				errorDetail.getErrors().put(fe.getField(), validationErrorList);
 			}
@@ -54,8 +54,7 @@ public class RestExceptionHandler {
 		}
 
 		return new ResponseEntity<>(errorDetail, HttpStatus.BAD_REQUEST);
-		
+
 	}
 
-	
 }

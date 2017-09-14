@@ -10,15 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-
-
 @Entity
 public class Account {
-	// when serialized should print out as a string
-	public enum Type implements Serializable{
+	public enum Type implements Serializable {
 		SAVINGS, CHECKING, CREDIT;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ACCOUNT_ID")
@@ -35,11 +32,9 @@ public class Account {
 
 	@Column(name = "ACCOUNT_BALANCE")
 	private double balance;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Customer customer;
-
-
 
 	public String getNickname() {
 		return nickname;
@@ -49,7 +44,6 @@ public class Account {
 		return type;
 	}
 
-	// prints e.g. Leon's savings account
 	public void setNickname(String nickname) {
 		this.nickname = nickname + "'s" + this.getType() + "account";
 	}
@@ -69,10 +63,10 @@ public class Account {
 	public double getBalance() {
 		return balance;
 	}
-	
-	public boolean increaseBalance(double amount){
-		
-		if(amount >= 0.0){
+
+	public boolean increaseBalance(double amount) {
+
+		if (amount >= 0.0) {
 			Double newBalance = getBalance() + amount;
 			this.balance = newBalance;
 			return true;
@@ -80,10 +74,10 @@ public class Account {
 		return false;
 
 	}
-	
-	public boolean decreaseBalance(double amount){
-		
-		if(amount >= 0.0){
+
+	public boolean decreaseBalance(double amount) {
+
+		if (amount >= 0.0) {
 			Double newBalance = getBalance() - amount;
 			this.balance = newBalance;
 			return true;
@@ -96,10 +90,12 @@ public class Account {
 		return customer;
 	}
 
-	public void setCustomer(Customer customer){
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
 
-	}	public long getId() {
+	}
+
+	public long getId() {
 		return id;
 	}
 

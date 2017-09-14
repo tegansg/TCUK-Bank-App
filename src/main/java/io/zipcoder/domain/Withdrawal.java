@@ -16,7 +16,8 @@ public class Withdrawal {
 
 	@Column(name = "TRANSACTION_TYPE")
 	private String type;
-	public enum Type implements Serializable{
+
+	public enum Type implements Serializable {
 		P2P, DEPOSIT, WITHDRAWAL
 	}
 
@@ -25,16 +26,18 @@ public class Withdrawal {
 
 	@Column(name = "WITHDRAWAL_STATUS")
 	private String status;
-	public enum status implements Serializable{
+
+	public enum status implements Serializable {
 		PENDNING, CANCELLED, COMPLETED
 	}
 
-	@Column(name = "PAYER_ID") 
+	@Column(name = "PAYER_ID")
 	private long payer_id;
 
 	@Column(name = "WITHDRAWAL_TYPE")
 	private String medium;
-	public enum Medium implements Serializable{
+
+	public enum Medium implements Serializable {
 		BALANCE, REWARDS
 	}
 
